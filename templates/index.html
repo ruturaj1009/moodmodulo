@@ -1,0 +1,94 @@
+<html>
+
+<head>
+  <title>Emotion Music Recommendation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bigelow+Rules&display=swap" rel="stylesheet">
+  <link type="text/css" href="/static/css/style.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+    crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+  <section id="main">
+    <div class="main-navbar">
+      <a href="#main"><img id="logo-img" src="/static/img/logo_3.png"></a>
+    </div>
+    <div class="main-content">
+      <div class="heading">
+        <h1>Let the <span>music <br>match</span> <br>your mood</h1>
+        <p>SCROLL DOWN TO EXPLORE</p>
+        <img class="down-img" src="/static/img/swipe-down.png" >
+      </div>
+      <div class="photos">
+        <img src="/static/img/home_page.png">
+      </div>
+    </div>
+
+  </section>
+  <div id="section-rutu">
+    <h1 align="center" style="color: #06448e;margin: 40px;">Music Recommender</h1>
+  </div>
+  <section id="project-main">
+
+    <div style="width: 50%;float: left;height: 50%;margin: 10px;text-align: center;">
+      <h2 style="color: #06448e; text-align: center; margin-left: -15px; margin-top: 10px; margin-bottom: 10px;">Emotion Detector</h2>
+
+      <div style="margin-right: 60px; text-align: center;width: 49%;">
+        <img class="outer-shadow" id="bg" class="center img-fluid" src="{{ url_for('video_feed') }}" />
+      </div>
+
+    </div>
+
+    <div class="mrgn-yu">
+      <h2  style="color: #06448e; text-align: left; margin-left: 30px;">Song Recommendations
+      </h2>
+      <div id="ResultArea"
+      style="padding: 15px;width: 49%;float: left;height: 100%;margin: auto;text-align: center;margin-bottom:15px; color: aliceblue;">
+    </div>
+    </div>
+
+  </section>
+
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+
+// Constantly Update Table
+    setInterval(function() {
+        $.getJSON('/t', function(data) {
+            CreateHtmlTable(data);
+            console.log(data,"DATA");
+          });
+        return false;
+    }, 100);
+
+    function CreateHtmlTable(data) {
+      //Clear result div
+      $("#ResultArea").html("");
+      //Crate table html tag
+      var table = $("<table class = 'table table-striped table-light table-bordered table-hover table-sm table-responsive' id=DynamicTable></table>").appendTo("#ResultArea");
+      //Create table header row
+      var rowHeader = 
+      $("<tr></tr>").appendTo(table);
+      $("<td></td>").text("Name").appendTo(rowHeader);
+      $("<td></td").text("Album").appendTo(rowHeader);
+      $("<td></td>").text("Artist").appendTo(rowHeader)
+      //Get JSON data by calling action method in controller
+      $.each(data, function (i, value) {
+
+          //Create new row for each record
+          var row = 
+          $("<tr></tr>").appendTo(table);
+          $("<td></td>").text(value.Name).appendTo(row);
+          $("<td></td>").text(value.Album).appendTo(row);
+          $("<td></td>").text(value.Artist).appendTo(row);
+      });
+    }
+
+  </script>
+
+</html>
